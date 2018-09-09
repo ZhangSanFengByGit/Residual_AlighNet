@@ -9,20 +9,22 @@ from torchvision import transforms
 
 from AlignNet import AlignNet
 
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 
 
 #arguments definition
 #device = torch.device("cuda" if torch.cuda.is_available == True else "cpu")
-device = torch.device("cpu")
-base_path = "H:/pedestrian_RGBT/kaist-rgbt/images/"
+device = torch.device("cuda")
+base_path = "/home/zhangzichun/pedestrian/images/"
 log_interval = 1
 checkpoint_interval = 2
 learning_rate = 0.001
 #warmUp_time = 500
 #warmUp_lr = learning_rate/warmUp_time
-checkpoint_model_dir = "H:/model_checkPoint_save_test/"
-save_model_dir = "H:/model_finish_save/"
+checkpoint_model_dir = "/home/zhangzichun/model_checkPoint_save_test/"
+save_model_dir = "/home/zhangzichun/model_finish_save/"
 epochs = 100
 feature_weight = 1e5
 image_weight = 1e5
@@ -31,8 +33,8 @@ batch_size = 4
 
 #transform method
 transform = transforms.Compose([
-        transforms.Resize([828,621]),
-        transforms.RandomCrop([768,576]),
+        transforms.Resize([621，828]),
+        transforms.RandomCrop([576，768]),
         transforms.RandomRotation([-5,5]),
         #transforms.RandomHorizontalFlip(0.2),
         transforms.ToTensor()
@@ -40,7 +42,7 @@ transform = transforms.Compose([
     ])
 
 transform2 = transforms.Compose([
-        transforms.Resize([768,576]),
+        transforms.Resize([576，768]),
         transforms.ToTensor()
         ])
 
@@ -52,9 +54,9 @@ mse_loss = torch.nn.MSELoss()
 imgR = list()
 imgT = list()
 imgT_trans = list()
-imgR_batch = torch.zeros(batch_size,3,768,576)
-imgT_batch = torch.zeros(batch_size,3,768,576)
-imgT_trans_batch = torch.zeros(batch_size,3,768,576)
+imgR_batch = torch.zeros(batch_size,3,576,768)
+imgT_batch = torch.zeros(batch_size,3,576,768)
+imgT_trans_batch = torch.zeros(batch_size,3,576,768)
 
 flag = 0
 global log_check
